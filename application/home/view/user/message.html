@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {include file='public/header' /}
+</head>
+<body style="background-color: gainsboro">
+{include file="public/nav" /}
+{include file="public/nav_model" /}
+
+<div class="layui-row layui-col-space30" style="margin-top: 10px;">
+    <div class="layui-col-md6">
+        {if condition="count($attentionMessage) gt 0"}
+        {foreach name="attentionMessage" item="vo"}
+        <div class="layui-card">
+            <div class="layui-card-header">
+                <div class="layui-row">
+                    <div class="layui-col-md1"><img src="{$vo.user.avatar_url}" class="layui-nav-img" style="cursor: pointer;" onclick="redirectU('{$vo.user.id}')"></div>
+                    <div class="layui-col-md1">{$vo.user.user_name}</div>
+                    <div class="layui-col-md2">{$vo.create_time}</div>
+                    <div class="layui-col-md1 layui-col-md-offset7" id="attention{$vo.id}">
+                        {if condition="$vo.status eq 0"}<span style="color: red;cursor: pointer;" onclick="read('{$vo.id}','attention')"><span class="layui-badge-dot"></span>未读</span>
+                        {else /}
+                        已读
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card-body">
+                {$vo.user.user_name}关注了你
+            </div>
+        </div>
+        {/foreach}
+        <div class="page" style="left: 20px;position: relative;">
+            {$attentionMessage->render()}
+        </div>
+        {else /}
+        <h1 align="center">没有关注消息</h1>
+        {/if}
+    </div>
+    <div class="layui-col-md6" >
+        {if condition="count($friendMessage) gt 0"}
+        {foreach name="friendMessage" item="vo"}
+        <div class="layui-card">
+            <div class="layui-card-header">
+                <div class="layui-row">
+                    <div class="layui-col-md1"><img src="{$vo.passage.user.avatar_url}" class="layui-nav-img" style="cursor: pointer;" onclick="redirectU('{$vo.passage.user.id}')"></div>
+                    <div class="layui-col-md1">{$vo.passage.user.user_name}</div>
+                    <div class="layui-col-md2">{$vo.create_time}</div>
+                    <div class="layui-col-md1 layui-col-md-offset7" id="friend{$vo.id}">
+                        {if condition="$vo.status eq 0"}<span style="color: red;cursor: pointer;" onclick="read('{$vo.id}','friend')"><span class="layui-badge-dot"></span>未读</span>
+                        {else /}
+                        已读
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card-body">
+                {$vo.passage.user.user_name}@了你<br/>
+                {$vo.passage.content}
+            </div>
+        </div>
+        {/foreach}
+        <div class="page" style="left: 20px;position: relative;">
+            {$friendMessage->render()}
+        </div>
+        {else /}
+        <h1 align="center">没有@消息</h1>
+        {/if}
+    </div>
+</div>
+
+<div class="layui-row layui-col-space30" style="margin-top: 10px;">
+    <div class="layui-col-md6">
+        {if condition="count($praiseMessage) gt 0"}
+
+        {foreach name="praiseMessage" item="vo"}
+        <div class="layui-card">
+            <div class="layui-card-header">
+                <div class="layui-row">
+                    <div class="layui-col-md1"><img src="{$vo.user.avatar_url}" class="layui-nav-img" style="cursor: pointer;" onclick="redirectU('{$vo.user.id}')"></div>
+                    <div class="layui-col-md1">{$vo.user.user_name}</div>
+                    <div class="layui-col-md2">{$vo.create_time}</div>
+                    <div class="layui-col-md1 layui-col-md-offset7" id="praise{$vo.id}">
+                        {if condition="$vo.status eq 0"}<span style="color: red;cursor: pointer;" onclick="read('{$vo.id}','praise')"><span class="layui-badge-dot"></span>未读</span>
+                        {else /}
+                         已读
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card-body">
+                {$vo.user.user_name}给你的微博点了赞：<br/>
+                {$vo.passage.content}
+            </div>
+        </div>
+        {/foreach}
+        <div class="page" style="left: 20px;position: relative;">
+            {$praiseMessage->render()}
+        </div>
+        {else /}
+        <h1 align="center">没有点赞消息</h1>
+        {/if}
+    </div>
+    <div class="layui-col-md6" >
+        {if condition="count($treadMessage) gt 0"}
+            {foreach name="treadMessage" item="vo"}
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <div class="layui-row">
+                        <div class="layui-col-md1"><img src="{$vo.user.avatar_url}" class="layui-nav-img" style="cursor: pointer;" onclick="redirectU('{$vo.user.id}')"></div>
+                        <div class="layui-col-md1">{$vo.user.user_name}</div>
+                        <div class="layui-col-md2">{$vo.create_time}</div>
+                        <div class="layui-col-md1 layui-col-md-offset7" id="tread{$vo.id}">
+                            {if condition="$vo.status eq 0"}<span style="color: red;cursor: pointer;" onclick="read('{$vo.id}','tread')"><span class="layui-badge-dot"></span>未读</span>
+                            {else /}
+                            已读
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    {$vo.user.user_name}给你的微博踩了你一脚：<br/>
+                    {$vo.passage.content}
+                </div>
+            </div>
+            {/foreach}
+            <div class="page" style="left: 20px;position: relative;">
+                {$treadMessage->render()}
+            </div>
+            {else /}
+            <h1 align="center">没有踩贬消息</h1>
+        {/if}
+    </div>
+</div>
+<script>
+
+
+    function read(pid,classify){
+        $.get('informStatus',{pid:pid,classify:classify},function(res){
+            if(res.status){
+                $('#'+classify+pid).empty();
+                $('#'+classify+pid).text('已读');
+            }else {
+                layer.msg(res.message,{icon:2});
+                return false;
+            }
+        },'json')
+    }
+
+    layui.use('layer', function(){
+        var layer = layui.layer;
+    });
+
+    function redirectU(id){
+        window.location.href="http://www.weibott.com/visit/"+id;
+    }
+
+
+    function  logout(){
+
+        $.post('logout',{},function(res){
+            if(res.status){
+                layer.msg(res.message, {icon: 1},function(){
+                    window.location.href='http://www.weibott.com';
+                });
+
+            }else {
+                layer.msg(res.message,{icon:2});
+            }
+
+        },'json');
+    }
+
+
+    function personal(){
+        $.get('personal',{},function(res){
+            if(res.status==0){
+                layer.msg(res.message,{icon:2});
+                return false;
+            }else {
+                window.location.href='personal';
+            }
+        })
+    }
+
+    function message(){
+        $.get('message',{},function(res){
+            if(res.status==0){
+                layer.msg(res.message,{icon:2});
+                return false;
+            }else {
+                window.location.href='message';
+            }
+        })
+    }
+
+    function register(){
+        $('#loginClose').click();
+        setTimeout(function(){
+            $('#register').click();
+        },1200);
+
+
+    }
+
+    layui.use('element', function(){
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+        //监听导航点击
+        element.on('nav(demo)', function(elem){
+            //console.log(elem)
+            layer.msg(elem.text());
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

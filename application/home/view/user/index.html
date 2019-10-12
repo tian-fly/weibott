@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {include file='public/header' /}
+    <link rel="stylesheet" href="__STATIC__/css/tourist.css" type="text/css">
+</head>
+<body style="background-color: #4cae4c">
+{include file="public/nav" /}
+<div class="main" style="margin-top: -10px;">
+    <div style="height: 405px;" id="topPicture">
+        <div align="center">
+            <img src="{$oneDetail.avatar_url}" style="width: 110px;height:100px;border-radius: 50%;margin-top: 10px;">
+            <span style="cursor: pointer;" data-toggle="modal" data-target="#avatar"><i class="layui-icon layui-icon-edit" style="font-size: 30px; color: #1E9FFF;"></i> </span>
+            <p style="margin-top: 5px;font-size: 20px;">{$oneDetail.user_name}</p>
+        </div>
+        <br/>
+        <div class="layui-row">
+            <div class="layui-col-md1 layui-col-md-offset5 layui-col-sm1 layui-col-sm-offset5"><span style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;粉丝&nbsp;&nbsp;<span class="layui-badge">{$oneDetail.id|fans}</span></span></div>
+            <div class="layui-col-md1 layui-col-sm1"><span style="font-size: 15px;">&nbsp;&nbsp;微博&nbsp;&nbsp;<span class="layui-badge">{$oneDetail.id|passageCount}</span></span></div>
+        </div>
+        <br/>
+        <div align="center"><span>性别：{$oneDetail.sex==0?'<i class="layui-icon layui-icon-male" style="font-size: 30px; color: blue;"></i>':'<i class="layui-icon layui-icon-female" style="font-size: 30px; color: pink;"></i>'}</span>
+            <span>生日：{$oneDetail.birthday}</span>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+        &nbsp;&nbsp;<span>注册于：{$oneDetail.create_time}</span>
+    </div>
+</div>
+
+
+<div class="modal fade " id="avatar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel2">修改头像</h4>
+            </div>
+            <div class="modal-body">
+                <iframe src="http://www.weibott.com/personal/changeAvatar" frameborder="0" scrolling="no"  style="height: 250px;width: 270px;" ></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="loginClose">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row layui-col-space30">
+    <div class="layui-col-md7" style="margin-top: 10px;margin-left: 10px;">
+{foreach name="onePassages" item="vo"}
+        <div class="layui-card" style="width: 900px;" id="delete{$vo.id}">
+            <div class="layui-card-header">
+                <div class="layui-row">
+                    <div class="layui-col-md1"><img src="{$vo.user.avatar_url}" class="layui-nav-img" style="cursor: pointer;" onclick="redirectU('{$vo.user.id}')"></div>
+                    <div class="layui-col-md1">{$vo.user.user_name}</div>
+                    <div class="layui-col-md2">{$vo.create_time}</div>
+                    <div class="layui-col-md1 layui-col-md-offset7" style="cursor: pointer;" onclick="deletePassage('{$vo.id}')"><i class="layui-icon layui-icon-delete" style="font-size: 30px; color: #1E9FFF;"></i> </div>
+                </div>
+            </div>
+            <div class="layui-card-body">
+                {$vo.content}
+                {if condition="$vo.type eq 2"}
+                <br/>
+                <p style="font-size: 15px;">//转自</p>&nbsp;&nbsp;{$vo.pid|getPcontent}
+                {if condition="hasImagesS($vo.pid)"}
+                <br/>
+                <?php
+                    $imagesS=hasImagesS($vo['pid']);
+                    $p=explode(',',$imagesS);
+                    $imagesB=hasImagesB($vo['pid']);
+                    $q=explode(',',$imagesB);
+                 ?>
+                <div class="layui-row" style="margin-top: 10px;cursor: pointer" id="forwardPhotos{$vo.id+(int)(lcg_value()*100)}"  onclick="photos(this.getAttribute('id'))">
+                    {foreach name="$p" item="vop"}
+                    <image src="http://www.weibott.com{$vop}" class="layui-col-md-3" style="height: 200px;" layer-src="http://www.weibott.com{$q[$key]}"></image>
+                    {/foreach}
+                </div>
+                {/if}
+                <br/>
+                <span style="float: right">------><a style="cursor: pointer" onclick="redirectU('{$vo.pid|getUid}')">{$vo.pid|getUname}</a></span>
+                {/if}
+
+                {if condition="$vo.imagesS"}
+                <br/>
+                <?php  $p=explode(',',$vo['imagesS']); ?>
+                <?php  $q=explode(',',$vo['imagesB']); ?>
+                <div class="layui-row" style="margin-top: 10px;cursor: pointer" id="photos{$vo.id+(int)(lcg_value()*100)}"  onclick="photos(this.getAttribute('id'))">
+                    {foreach name="$p" item="vop"}
+                    <image src="http://www.weibott.com{$vop}" class="layui-col-md-3" style="height: 200px;" layer-src="http://www.weibott.com{$q[$key]}"></image>
+                    {/foreach}
+                </div>
+                {/if}
+                <br/>
+                <br/>
+                <div class="layui-row">
+                    <div class="layui-col-md1"><span style="cursor: pointer;"   {if condition="hasPraise($vo.id)"}onclick="noPraise('{$vo.id}','{$vo.user_id}')"{else /}onclick="praise('{$vo.id}','{$vo.user_id}')"{/if} id="praises{$vo.id}"><i class="layui-icon layui-icon-praise " style="font-size: 23px;{if condition='hasPraise($vo.id)'}color:red;{/if}"></i>&nbsp;<span id="praise{$vo.id}" class="layui-badge layui-bg-gray">{$vo.id|getPraiseCount}</span></div>
+                    <div class="layui-col-md1"><span style="cursor: pointer;"  {if condition="hasTread($vo.id)"}onclick="noTread('{$vo.id}','{$vo.user_id}')"{else /}onclick="tread('{$vo.id}','{$vo.user_id}')"{/if} id="treads{$vo.id}"><i class="layui-icon layui-icon-tread " style="font-size: 23px;{if condition='hasTread($vo.id)'}color:red;{/if}"></i>&nbsp;<span id="tread{$vo.id}" class="layui-badge layui-bg-gray">{$vo.id|getTreadCount}</span></div>
+                    <div class="layui-col-md1">
+                        <div  style="cursor: pointer;" id="comment('{$vo.id}')" data-toggle="collapse" href="#collapseExample{$vo.id}" aria-expanded="false" aria-controls="collapseExample">
+                            <span style="cursor: pointer;" ><i class="layui-icon layui-icon-dialogue" style="font-size: 23px;"></i>&nbsp;<span id="comment{$vo.id}" class="layui-badge layui-bg-gray">{$vo.id|getCommentsCount}</span></span>
+                        </div>
+                        <br/>
+                        <div class="collapse" id="collapseExample{$vo.id}" style="width: 852px;margin-left: -136px;">
+                            <div class="well">
+                                <form class="layui-form" action="">
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label"></label>
+                                        <div class="layui-input-block" style="margin-left: -4px;">
+                                            <textarea placeholder="请输入内容" class="layui-textarea" rows="3" id="sayComment{$vo.id}" ></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-row">
+                                        <div class="layui-col-md2">
+                                            <div id="emotion{$vo.id}" onclick="emotion('{$vo.id}')" style="cursor: pointer;"><span style="font-size: 15px;"><i class="layui-icon layui-icon-face-smile-b" style="font-size: 20px;" ></i>&nbsp;添加表情</span></div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="layui-btn layui-btn-radius layui-bg-blue " style="float: right;margin-top: -15px;" onclick="comment('{$vo.id}')" >评论</button>
+                                </form>
+                                <br/>
+                                <hr>
+                                <div id="more{$vo.id}" style="padding-bottom: 10px">
+                                    {foreach name="$vo.id|passageComments" item="voc"}
+                                    <div class="layui-row">
+                                        <div class="layui-col-md1"><img src="{$vo.user.avatar_url}" class="layui-nav-img"></div>
+                                        <div class="layui-col-md1">{$voc.user.user_name}</div>
+                                        <div class="layui-col-md2">{$voc.create_time}&nbsp;&nbsp;<span style="font-size: 20px;">:</span></div>
+                                    </div>
+                                    <br/>
+                                    <div>{$voc.content}</div>
+                                    <br/>
+                                    <br/>
+                                    {/foreach}
+                                    <div id="mores{$vo.id}">
+                                        {if condition="passageCommentCount($vo.id) gt 3"}
+                                        <div align="center"><a onclick="more('{$vo.id}','3')" style="cursor: pointer;">点击加载更多....</a></div>
+                                        {else/}
+                                        <p align="center">没有了,亲&nbsp;<i class="layui-icon layui-icon-face-cry" style="font-size: 30px;"></i> </p>
+                                        {/if}
+                                    </div>
+                                    <span onclick="topComment('{$vo.id}')" id="topComment{$vo.id}" style="float: right;cursor: pointer;"><i class="layui-icon layui-icon-up" style="font-size: 30px; color: #1E9FFF;"></i> </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md1"><span style="cursor: pointer;" data-toggle="modal" data-target="#forward{$vo.id}"><i class="layui-icon layui-icon-release" style="font-size: 23px;"></i>&nbsp;<span id="forwardNum{$vo.id}" class="layui-badge layui-bg-gray">{$vo.id|getForwardsCount}</span></span></div>
+
+                    <!-- 转发Modal -->
+                    <div class="modal fade " id="forward{$vo.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog " role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="forwardName{$vo.id}">转发微博</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="color:deepskyblue;">转发如下内容：</p>
+                                    <div>
+                                        <div class="layui-row">
+                                            <div class="layui-col-md1"><img src="{$vo.user.avatar_url}" class="layui-nav-img"></div>
+                                            <div class="layui-col-md1">{$vo.user.user_name}</div>
+                                            <div class="layui-col-md2">{$vo.create_time}</div>
+                                        </div>
+                                        <div>{$vo.content}</div>
+                                        {if condition="$vo.imagesS"}
+                                        <br/>
+                                        <?php  $p=explode(',',$vo['imagesS']); ?>
+                                        <div class="layui-row" style="margin-top: 10px;">
+                                            {foreach name="$p" item="vop"}
+                                            <image src="{$vop}" class="layui-col-md-3" style="height: 50px;"></image>
+                                            {/foreach}
+                                        </div>
+                                        {/if}
+                                    </div>
+                                    <hr>
+                                    <form class="layui-form" action="">
+                                        <div class="layui-form-item layui-form-text">
+                                            <label class="layui-form-label"></label>
+                                            <div class="layui-input-block" style="margin-left: -4px;">
+                                                <textarea placeholder="请输入内容" class="layui-textarea" rows="3" id="sayForward{$vo.id}" ></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="layui-row">
+                                            <div class="layui-col-md2">
+                                                <div id="forwardEmotion{$vo.id}" onclick="forwardEmotion('{$vo.id}')" style="cursor: pointer;"><span style="font-size: 15px;"><i class="layui-icon layui-icon-face-smile-b" style="font-size: 20px;" ></i>&nbsp;添加表情</span></div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="layui-btn layui-btn-radius layui-bg-blue "  style="float: right;"  onclick="startForward('{$vo.id}')">转发</button>
+                                        <br/>
+                                        <br/>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+{/foreach}
+        <div align="center">
+            <div class="layui-row">
+                <div class="layui-col-md2">
+                    {$onePassages->render()}
+                </div>
+                <div class="layui-col-md2">
+                    <h2>共{$page}页</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md3 layui-col-md-offset1" style="margin-top: 50px;">
+        <div class="layui-card">
+            <div class="layui-card-header">个人信息<span style="float: right;cursor: pointer" onclick="change()"><i class="layui-icon layui-icon-edit" style="font-size: 30px; color: #1E9FFF;"></i><span style="font-size: 10px;color: #1E9FFF;"">修改</span></span></div>
+            <div class="layui-card-body">
+                <div align="center">
+                    <img src="{$oneDetail.avatar_url}" style="width: 50px;height:50px;border-radius: 50%;margin-top: 10px;">
+                    <p style="margin-top: 5px;font-size: 20px;">{$oneDetail.user_name}
+                    <span>{$oneDetail.sex==0?'<i class="layui-icon layui-icon-male" style="font-size: 30px; color: blue;"></i>':'<i class="layui-icon layui-icon-female" style="font-size: 30px; color: pink;"></i>'}</span></p>
+                </div>
+                <div align="center">
+                    <span style="font-size: 5px;">粉丝&nbsp;&nbsp;<span class="layui-badge">{$oneDetail.id|fans}</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span style="font-size: 5px;">微博&nbsp;&nbsp;<span class="layui-badge">{$oneDetail.id|passageCount}</span></span>
+                </div>
+                <br/>
+                <div class="layui-row" style="margin-left: 10px;">
+                    <div class="layui-col-xs4">电话：</div>
+                    <div class="layui-col-xs4 layui-col-md-offset4">{$oneDetail.phone}</div>
+                </div>
+                <div class="layui-row" style="margin-left: 10px;">
+                    <div class="layui-col-xs4">QQ：</div>
+                    <div class="layui-col-xs4 layui-col-md-offset4">{$oneDetail.qq}</div>
+                </div>
+                <div class="layui-row" style="margin-left: 10px;">
+                    <div class="layui-col-xs4">Email：</div>
+                    <div class="layui-col-xs4 layui-col-md-offset3">{$oneDetail.email}</div>
+                </div>
+                <div class="layui-row" style="margin-left: 10px;">
+                    <div class="layui-col-xs4">生日：</div>
+                    <div class="layui-col-xs4 layui-col-md-offset4">{$oneDetail.birthday}</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md3 layui-col-md-offset1" style="margin-top: 50px;">
+        <div class="layui-card">
+            <div class="layui-card-header">我的朋友们</div>
+            <div class="layui-card-body">
+                {foreach name="friendList" item="vo"}
+                <div class="layui-row" style="margin-left: 10px;cursor: pointer;" onclick="redirectU('{$vo.friend.id}')">
+                    <div class="layui-col-xs4"><span><img src="{$vo.friend.avatar_url}" class="layui-nav-img"></span></div>
+                    <div class="layui-col-xs3"><span>{$vo.friend.user_name}</span></div>
+                    <div class="layui-col-xs5"> <span style="font-size: 5px;">粉丝&nbsp;&nbsp;<span class="layui-badge">{$vo.friend.id|fans}</span></span><span style="font-size: 5px;">微博&nbsp;&nbsp;<span class="layui-badge">{$vo.friend.id|passageCount}</span></span></div>
+                </div>
+                <hr/>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="public/nav_model" /}
+<script src="__STATIC__/js/jquery.js"></script>
+<script type="text/javascript" src="__STATIC__/js/jquery.qqFace.js"></script>
+<script>
+
+    layui.use('layer', function(){
+        var layer = layui.layer;
+    });
+
+   function redirectU(id){
+        window.location.href="http://www.weibott.com/visit/"+id;
+    }
+
+    function change(){
+        layer.tab({
+            area: ['800px', '500px'],
+            tab: [{
+                title: '基本信息',
+                content: '<iframe src="http://www.weibott.com/personal/changeBase" frameborder="0" scrolling="no" style="width:600px;height: 420px;"></iframe>'
+            }, {
+                title: '密码',
+                content: '<iframe src="http://www.weibott.com/personal/changePassword" frameborder="0" scrolling="no" style="width:600px;height: 450px;" ></iframe>'
+            }]
+        });
+    }
+
+    function  logout(){
+        $.post('logout',{},function(res){
+            if(res.status){
+                layer.msg(res.message, {icon: 1},function(){
+                    window.location.href='http://www.weibott.com';
+                });
+
+            }else {
+                layer.msg(res.message,{icon:2});
+            }
+
+        },'json');
+    }
+
+    function forwardEmotion(id){
+        $('#forwardEmotion'+id).qqFace({
+            id : 'facebox'+id, //表情盒子的ID
+            assign:'sayForward'+id, //给那个控件赋值
+            path:'/static/images/face/'	//表情存放的路径
+        });
+    }
+
+    function more(id,page){
+        $.get('passage/comment/more',{passage_id:id,page:page},function(res){
+            if(res.status){
+    //                layer.msg(res.message,{icon:2});
+                $('#mores'+id).remove();
+                $('#topComment'+id).remove();
+                for(var i=0;i<res.message.length;i++){
+                    $('#more'+id).append(' <div class="layui-row"><div class="layui-col-md1"><img src="'+res.message[i]["user"]["avatar_url"]+'" class="layui-nav-img"></div>'+
+                            ' <div class="layui-col-md1">'+res.message[i]["user"]["user_name"]+'</div>'+
+                            '<div class="layui-col-md2">'+res.message[i]["create_time"]+'&nbsp;&nbsp;<span style="font-size: 20px;">:</span></div></div>'+
+                            '<br/><div>'+res.message[i]["content"]+'</div><br/><br/>');
+                }
+
+                if(res.message.length>3){
+                    $('#more'+id).append('<div align="center"><a onclick="more('+id+',3)" style="cursor: pointer;">点击加载更多....</a></div>');
+                    $('#more'+id).append('<span onclick="topComment('+id+')" id="topComment'+id+'" style="float: right;cursor: pointer;"><i class="layui-icon layui-icon-up" style="font-size: 30px; color: #1E9FFF;"></i> </span>')
+                }else {
+                    $('#more'+id).append('<p align="center">没有了,亲&nbsp;<i class="layui-icon layui-icon-face-cry" style="font-size: 30px;"></i></p>');
+                    $('#more'+id).append('<span onclick="topComment('+id+')" id="topComment'+id+'" style="float: right;cursor: pointer;"><i class="layui-icon layui-icon-up" style="font-size: 30px; color: #1E9FFF;"></i> </span>')
+
+                }
+            }else{
+                layer.msg(res.message,{icon:2});
+                return false;
+            }
+        })
+    }
+
+    function comment(id){
+        var content=$('#sayComment'+id).val();
+        if(!content){
+            layer.msg('请输入发送内容');
+            return false;
+        }
+        content=content.replace(/\r\n/g,"<br/>");
+        content=content.replace(/\n/g,"<br/>");
+        content=content.replace(/\s/g,"&nbsp");
+        $.post('passage/sendComment',{pid:id,content:content},function(res){
+            if(res.status==1){
+                layer.msg(res.message,{icon:1});
+                $('#more'+id).prepend(' <div class="layui-row"> <div class="layui-col-md1"><img src="'+res.result["avatar_url"]+'" class="layui-nav-img"></div>'+
+                        '<div class="layui-col-md1">'+res.result["user_name"]+'</div>'+
+                        '<div class="layui-col-md2">'+res.result["create_time"]+'&nbsp;&nbsp;<span style="font-size: 20px;">:</span></div></div><br/>'+
+                        ' <div>'+res.result["content"]+'</div><br/><br/>'
+
+                );
+            }else {
+                layer.msg(res.message,{icon:2});
+                return false;
+            }
+        })
+    }
+
+    function emotion(id){
+        $('#emotion'+id).qqFace({
+            id : 'facebox'+id, //表情盒子的ID
+            assign:'sayComment'+id, //给那个控件赋值
+            path:'/static/images/face/'	//表情存放的路径
+        });
+    }
+    function topComment(id){
+        $('#comment'+id).click();
+    }
+
+    function startForward(id){
+        var content=$('#sayForward'+id).val();
+        if(!content){
+            layer.msg('请输入发送内容');
+            return false;
+        }
+        content=content.replace(/\r\n/g,"<br/>");
+        content=content.replace(/\n/g,"<br/>");
+        content=content.replace(/\s/g,"&nbsp");
+        $.post('passage/sendForward',{pid:id,content:content},function(res){
+            if(res.status==1){
+                layer.msg(res.message,{icon:1});
+                parent.window.location.reload();
+            }else {
+                layer.msg(res.message,{icon:2});
+                return false;
+            }
+        })
+    }
+
+
+    function praise(id,uid){
+        var num=parseInt($('#praise'+id).text());
+        $.post('passage/praise',{passage_id:id,p_user_id:uid},function(res){
+            if(res.status==1){
+                $('#praise'+id).text(num+1);
+                $('#praises'+id).attr('onclick','noPraise('+id+','+uid+')');
+                $('#praises'+id).find('i').attr('style','font-size: 23px;color: red;');
+                layer.msg(res.message,{icon:1});
+            }else{
+                layer.msg(res.message,{icon:2});
+                return false;
+            }
+        })
+    }
+
+    function noPraise(id,uid){
+        var num=parseInt($('#praise'+id).text());
+        $.ajax({
+            type:'delete',
+            url:'passage/noPraise',
+            data:{passage_id:id},
+            dataType:'json',
+            success:function(res){
+                if(res.status==1){
+                    $('#praise'+id).text(num-1);
+                    $('#praises'+id).attr('onclick','praise('+id+','+uid+')');
+                    $('#praises'+id).find('i').attr('style','font-size: 23px;');
+                    layer.msg(res.message,{icon:1});
+                }else{
+                    layer.msg(res.message,{icon:2});
+                    return false;
+                }
+            }
+
+        });
+
+    }
+
+    function tread(id,uid){
+        var num=parseInt($('#tread'+id).text());
+        $.post('passage/tread',{passage_id:id,p_user_id:uid},function(res){
+            if(res.status==1){
+                $('#tread'+id).text(num+1);
+                $('#treads'+id).attr('onclick','notread('+id+','+uid+')');
+                $('#treads'+id).find('i').attr('style','font-size: 23px;color: red;');
+                layer.msg(res.message,{icon:1});
+            }else{
+                layer.msg(res.message,{icon:2});
+                return false;
+            }
+        })
+    }
+
+    function noTread(id,uid){
+        var num=parseInt($('#tread'+id).text());
+        $.ajax({
+            type:'delete',
+            url:'passage/noTread',
+            data:{passage_id:id},
+            dataType:'json',
+            success:function(res){
+                if(res.status==1){
+                    $('#tread'+id).text(num-1);
+                    $('#treads'+id).attr('onclick','praise('+id+','+uid+')');
+                    $('#treads'+id).find('i').attr('style','font-size: 23px;');
+                    layer.msg(res.message,{icon:1});
+                }else{
+                    layer.msg(res.message,{icon:2});
+                    return false;
+                }
+            }
+
+        });
+
+    }
+
+    function personal(){
+        $.get('personal',{},function(res){
+            if(res.status==0){
+                layer.msg(res.message,{icon:2});
+                return false;
+            }else {
+                window.location.href='personal';
+            }
+        })
+    }
+
+    function message(){
+        $.get('message',{},function(res){
+            if(res.status==0){
+                layer.msg(res.message,{icon:2});
+                return false;
+            }else {
+                window.location.href='message';
+            }
+        })
+    }
+
+    function register(){
+        $('#loginClose').click();
+        setTimeout(function(){
+            $('#register').click();
+        },1200);
+
+
+    }
+
+    function deletePassage(id){
+        $.ajax({
+            type:'delete',
+            url:'passage/delete',
+            data:{passage_id:id},
+            dataType:'json',
+            success:function(res){
+                if(res.status==1){
+                    $('#delete'+id).remove();
+                    layer.msg(res.message,{icon:1});
+                }else{
+                    layer.msg(res.message,{icon:2});
+                    return false;
+                }
+            }
+
+        });
+    }
+
+    layui.use('element', function(){
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+        //监听导航点击
+        element.on('nav(demo)', function(elem){
+            //console.log(elem)
+            layer.msg(elem.text());
+        });
+    });
+</script>
+
+<script>
+    layui.use('layer', function(){
+        var layer = layui.layer;
+    });
+
+    function photos(id){
+        layer.photos({
+            photos:'#'+id
+            ,shift:4
+        })
+    }
+</script>
+
+<script>
+    setTimeout(function(){
+
+    })
+</script>
+
+</body>
+</html>

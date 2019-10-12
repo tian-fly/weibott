@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {include file='public/header' /}
+</head>
+<body>
+<!--<p id="time" onclick="niu(60)">dd</p>-->
+<button type="button" class="btn btn-success " id="time"></button>
+<!--<button class="layui-btn" type="button"   ></button>-->
+<script>
+
+    //   function time(i){
+    //       if(i>0){
+    //           $('#time').text('收不到，'+i+'秒后点击重发');
+    //           $('#time').attr('disabled','disabled');
+    //           i--;
+    //           setTimeout(function(){
+    //               time(i);
+    //           },1000)
+    //       }else{
+    //           $('#time').attr("disabled",false);
+    //           $('#time').text('收不到，点击重发');
+    //       }
+    //   }
+
+    var i=5;
+    function time() {
+        if (i== 0) {
+            $('#time').attr("disabled", false);
+            $('#time').text('收不到，点击重发');
+        } else {
+            $('#time').attr("disabled", "disabled");
+            $('#time').text("重发" + i);
+
+            setTimeout(function(){
+                time();
+            },1000);
+            i--;
+        }
+    }
+    time();
+
+
+
+</script>
+</body>
+</html>
