@@ -214,12 +214,18 @@
 
 <div align="center">
     <div class="layui-row">
-        <div class="layui-col-md2 layui-col-md-offset4">
+        <div class="layui-col-md4">
             {$onePassages->render()}
         </div>
-        <div class="layui-col-md1">
+        {if condition="count($onePassages) gt 0"}
+        <div class="layui-col-md2">
             <h2>共{$page}页</h2>
         </div>
+        {else/}
+        <div class="layui-col-md5">
+            <h2>共{$page}页,暂未发表或转发所任何帖</h2>
+        </div>
+        {/if}
     </div>
 </div>
 
@@ -240,7 +246,7 @@
 
     function  logout(){
 
-        $.post('logout',{},function(res){
+        $.post('http://www.weibott.com/logout',{},function(res){
             if(res.status){
                 layer.msg(res.message, {icon: 1},function(){
                     window.location.href='http://www.weibott.com';

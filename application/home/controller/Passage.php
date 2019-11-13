@@ -211,13 +211,13 @@ class Passage extends BaseController
             $uploadsB = '/user_uploads/'.'/'.$uid.'/big/'.$info->getSaveName();
             $uploadS= '/'.$smallStr;
 
-
-            $uploadsBarr=session('?uploadsB')?session('uploadsB'):[];
-            $uploadsSarr=session('?uploadsS')?session('uploadsS'):[];
-            array_push($uploadsBarr,$uploadsB);
-            session('uploadsB',$uploadsBarr);
-            array_push($uploadsSarr,$uploadS);
-            session('uploadsS',$uploadsSarr);
+//
+//            $uploadsBarr=session('?uploadsB')?session('uploadsB'):[];
+//            $uploadsSarr=session('?uploadsS')?session('uploadsS'):[];
+//            array_push($uploadsBarr,$uploadsB);
+//            session('uploadsB',$uploadsBarr);
+//            array_push($uploadsSarr,$uploadS);
+//            session('uploadsS',$uploadsSarr);
 
 
             return ['status' => 1, 'message' => '上传成功', 'uploadB_attr' => $uploadsB,'uploadS_attr'=>$uploadS];

@@ -20,7 +20,10 @@ use app\home\model\Friend as FriendModel;
 use app\home\model\Passage as PassageModel;
 class User extends  BaseController
 {
-
+public function test($a,$b){
+    $c=$a+$b;
+    return $c;
+}
 //    protected $beforeActionList=['no_login'=>
 //        ['only'=>'index,changeBase,changePassword,changeAvatar,saveChangeBaseMessage,saveChangePassword,saveChangeAvatar']
 //    ];
@@ -53,7 +56,7 @@ class User extends  BaseController
 
         $this->assign('onePassages',$onePassages);
 
-        $oneDetail=UserModel::getUser($data['id']=$uid);
+        $oneDetail=UserModel::get($uid);
         $coneDetail=$oneDetail->hidden(['password']);
         $this->assign('oneDetail',$coneDetail);
 
@@ -295,7 +298,7 @@ class User extends  BaseController
 
     public function changeAvatar(){
         $uid=$this->getUid();
-        $avatar_url=UserModel::get($uid)->value('avatar_url');
+        $avatar_url=UserModel::where(['id'=>$uid])->value('avatar_url');
         $this->assign('avatar_url',$avatar_url);
         return $this->fetch();
     }

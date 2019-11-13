@@ -41,13 +41,13 @@
 <div class="layui-row">
     <div class="layui-col-md8 layui-col-md-offset2" style="margin-top: 5px">
     <div class="layui-card" style="width: 900px;">
-        <div class="layui-card-header">在此处发送微博</div>
+        <div class="layui-card-header">在此处发送帖子内容</div>
         <div class="layui-card-body">
             <!--<form class="layui-form">-->
                 <div class="layui-form-item layui-form-text">
                     <label class="layui-form-label"></label>
                     <div class="layui-input-block" style="margin-left: -4px;">
-                        <textarea placeholder="请输入内容" class="layui-textarea" rows="5" id="saytext" ></textarea>
+                        <textarea placeholder="请输入内容" class="layui-textarea" rows="8" id="saytext" ></textarea>
                     </div>
                 </div>
 
@@ -92,9 +92,10 @@
                         </div>
                     </div>
                 </div>
+                <span style="float: right;margin-right: 100px;">剩余<span id="font" style="color: red">500</span>字</span>
                 <br/>
                 <!--<span style="font-size: 20px;"><i class="layui-icon layui-icon-face-smile-b" style="font-size: 30px;" ></i>&nbsp;添加表情</span>-->
-                <button type="button" class="layui-btn layui-btn-radius " style="float: right;margin-top: -30px;" onclick="sendPassage()" >发送</button>
+                <button type="button" class="layui-btn layui-btn-radius " style="float: right;margin-top: -30px;" onclick="sendPassage()">发送</button>
             <!--</form>-->
 
         </div>
@@ -221,7 +222,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="forwardName{$vo.id}">转发微博</h4>
+                                        <h4 class="modal-title" id="forwardName{$vo.id}">转发帖子</h4>
                                     </div>
                                     <div class="modal-body">
                                         <p style="color:deepskyblue;">转发如下内容：</p>
@@ -293,6 +294,17 @@
 </body>
 <script>
 
+    $('#saytext').keyup(function(){
+            var count = $('#saytext').val().length;
+            if(count>=500){
+                var num =  $('#saytext').val().substr(0,500);
+                $('#saytext').val(num);
+                alert('超过字数限制');
+            }else{
+                $('#font').text(500-count);
+            }
+    });
+
     function search(){
         var value= $.trim($('#likes').val());
         window.location.href='http://www.weibott.com/home/passage/search?content='+value;
@@ -307,16 +319,25 @@
     function  logout(){
 
 
-        var uploadB=[];
+        var uploadb=[];
         $("input[name='uploadB']").each(function(){
-            uploadB.push($(this).val());
+            uploadb.push($(this).val());
         });
-        var uploads=uploadB.join(',');
-       if(uploads.length>0){
+
+
+
+        var uploads=[];
+        $("input[name='uploadS']").each(function(){
+            uploads.push($(this).val());
+        });
+
+
+
+       if(uploadb.length>0){
            layer.confirm('有图片正在编辑中，是否删除上传而不发布的图片并退出？', {
                btn: ['确定','取消'],icon:3 //按钮
            }, function(){
-               $.post('logout',{},function(res){
+               $.post('logout',{uploadb:uploadb,uploads:uploads},function(res){
                    if(res.status){
                        layer.msg(res.message, {icon: 1},function(){
                            window.location.reload();

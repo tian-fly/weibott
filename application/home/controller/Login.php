@@ -34,8 +34,8 @@ class Login extends Controller
         }
 
         $data=$request->except('code,saveForm','post');
-//        $data['password']=md5($data['password']);
-        $user=UserModel::getUser($data);
+        $data['password']=md5($data['password']);
+        $user=UserModel::getUser(['user_name'=>$data['user_name'],'password'=>$data['password']]);
         if(!$user){
             return [
               'status'=>0,
@@ -82,24 +82,24 @@ class Login extends Controller
 
     public function logout()
     {
-        if(session('?uploadsB')){
-            $uploadsBarr = session('uploadsB');
-            $uploadsSarr = session('uploadsS');
-            foreach ($uploadsBarr as $value) {
+        $uploadb = input('post.uploadb/a');
+        $uploads = input('post.uploads/a');
+        if(count($uploadb)>0){
+            foreach ($uploadb as $value) {
                 if (file_exists(ROOT_PATH . 'public' . $value)) {
                     unlink(ROOT_PATH . 'public' . $value);
                 }
             }
-            foreach ($uploadsSarr as $value) {
+            foreach ($uploads as $value) {
                 if (file_exists(ROOT_PATH . 'public' . $value)) {
                     unlink(ROOT_PATH . 'public' . $value);
                 }
             }
         }
-
-
-        session('uploadsB',null);
-        session('uploadsS',null);
+//
+//
+//        session('uploadsB',null);
+//        session('uploadsS',null);
 
         Session::delete('user_info');
         //  $this->success('退出成功','/');
