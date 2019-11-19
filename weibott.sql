@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2019-10-13 15:46:15
+Date: 2019-11-19 09:08:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,7 +37,7 @@ CREATE TABLE `wei_admin` (
 -- ----------------------------
 -- Records of wei_admin
 -- ----------------------------
-INSERT INTO `wei_admin` VALUES ('1', 'tian', '123456', '127.0.0.1', '1', '1569897862', '1', '1', null, '1569665067', null);
+INSERT INTO `wei_admin` VALUES ('1', 'tian', '123456', '127.0.0.1', '1', '1573715863', '1', '1', null, '1573715863', null);
 
 -- ----------------------------
 -- Table structure for wei_attention
@@ -74,12 +74,13 @@ CREATE TABLE `wei_feedback` (
   `update_time` int(11) DEFAULT NULL,
   `delete_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of wei_feedback
 -- ----------------------------
 INSERT INTO `wei_feedback` VALUES ('1', '66666', '1', '1', '1570091286', '1570091286', null);
+INSERT INTO `wei_feedback` VALUES ('2', 'dd', '4', '1', '1573635984', '1573635984', null);
 
 -- ----------------------------
 -- Table structure for wei_friend
@@ -169,7 +170,7 @@ CREATE TABLE `wei_passage` (
   `update_time` int(11) DEFAULT NULL,
   `delete_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of wei_passage
@@ -180,6 +181,19 @@ INSERT INTO `wei_passage` VALUES ('23', '22', '5555', null, null, '1', '1', '1',
 INSERT INTO `wei_passage` VALUES ('25', '0', 'LLLLLLLLLLL', '/user_uploads//1/big/20190929\\1eac2d1d379a1566d1f8cd11962b2eb0.jpg,/user_uploads//1/big/20190929\\51b8d19e40a7e99deb1ad00f981c01d8.jpg', '/user_uploads/1/small/20190929/1569732314287909.jpg,/user_uploads/1/small/20190929/1569732344533213.jpg', '0', '1', '1', '1', '1569732357', '1569732357', null);
 INSERT INTO `wei_passage` VALUES ('26', '25', '好看', null, null, '2', '1', '1', '1', '1569810324', '1569810324', null);
 INSERT INTO `wei_passage` VALUES ('32', '0', '666666', '', '', '0', '1', '1', '1', '1570090680', '1570090680', null);
+INSERT INTO `wei_passage` VALUES ('33', '0', '是', '', '', '0', '1', '1', '1', '1573545208', '1573545208', null);
+INSERT INTO `wei_passage` VALUES ('34', '0', '是', '', '', '0', '1', '1', '1', '1573545211', '1573545211', null);
+INSERT INTO `wei_passage` VALUES ('35', '0', '凤凰涅槃，浴火重生！小凤凰夺冠S9啦！&nbsp为感谢贴吧粉丝在S9期间对小凤凰的支持，小凤凰给大家撒礼品~&nbsp回复本贴，每300楼抽取一楼送出100元Q币！每1W楼抽取一楼送出1000元Q币！&nbsp注：所有抽取楼层...', '', '', '0', '1', '1', '1', '1573545221', '1573545221', null);
+INSERT INTO `wei_passage` VALUES ('38', '0', '有没有寒假出来打工的可以联系我', '', '', '0', '1', '1', '1', '1573546026', '1573546026', null);
+INSERT INTO `wei_passage` VALUES ('39', '38', '我', null, null, '1', '1', '1', '1', '1573546038', '1573546038', null);
+INSERT INTO `wei_passage` VALUES ('40', '38', 'kuai', null, null, '2', '1', '1', '1', '1573573073', '1573573073', null);
+INSERT INTO `wei_passage` VALUES ('43', '0', '上单：鳄鱼。开大有凤凰的翅膀，旁边都是火焰&nbsp打野：盲僧。Q是一只凤凰，盾牌是凤', '', '', '0', '1', '1', '1', '1573638932', '1573638932', null);
+INSERT INTO `wei_passage` VALUES ('46', '44', '加油，FPX！', null, null, '1', '1', '1', '1', '1573641267', '1573641267', null);
+INSERT INTO `wei_passage` VALUES ('48', '0', '2019英雄联盟全球总决赛进行中，FPX专属战队印记在本贴领取~&nbspS9的战火燃起，FPX', '/user_uploads//1/big/20191113\\7b1ceda191188d911cccb79a8bb6c084.jpg', '/user_uploads/1/small/20191113/1573647469091358.jpg', '0', '1', '1', '1', '1573647471', '1573647471', null);
+INSERT INTO `wei_passage` VALUES ('49', '0', '骂lwx的你们都取关吧！他说错什么了吗', '/user_uploads//1/big/20191113\\caa3e2c6a025792e580feb14d669a4b6.jpg', '/user_uploads/1/small/20191113/1573647622333924.jpg', '0', '1', '1', '1', '1573647625', '1573647625', null);
+INSERT INTO `wei_passage` VALUES ('50', '49', 'fpx加油', null, null, '1', '1', '1', '1', '1573647638', '1573647638', null);
+INSERT INTO `wei_passage` VALUES ('51', '49', 'fpx加油[em_13]', null, null, '1', '1', '1', '1', '1573647657', '1573647657', null);
+INSERT INTO `wei_passage` VALUES ('52', '0', '回顾这次bo5，FPX真的是一场打的比一场好，每个人都打出了自己最极限的水平，相信每个小伙伴看的都是热血沸腾吧毕竟LPL已经两连冠了，现在的我们可以大声说我们LPL是第一赛区了。<br/>而在赛后，FPX的双C也接受了媒体的采访。而在采访中doinb的一番话却让人落泪，doinb表示“我终于证明了自己，之前有很多人说我这种中单不能拿冠军，现在我做到了，谢谢我的队友”，确实doinb一路走来不容易，提到最强中单的时候，他都是被忽视的对象，而现在他是一名“真正的世界冠军中单”，他成功了。<br/>除此之外，doinb还谈到了他的老婆，硬币哥表示“之前自己已经准备要退役了，但是我的老婆跟我说，让我在打一年，不给自己留遗憾，如果没有他就没有现在的我，谢谢”。<br/>不得不说，看到FPX的夺冠，小米还是很感动的。眼角有泪划过，现在没人敢说我们LPL不行了，我们就是第一赛区。', '/user_uploads//1/big/20191113\\2ef7d5531866dd8ff003b8490f5aab8b.jpg,/user_uploads//1/big/20191113\\2c683c98c706962fb165f0fa2ab42e91.jpg', '/user_uploads/1/small/20191113/1573647780188381.jpg,/user_uploads/1/small/20191113/1573647784267003.jpg', '0', '1', '1', '1', '1573647786', '1573647786', null);
 
 -- ----------------------------
 -- Table structure for wei_praise
@@ -195,12 +209,15 @@ CREATE TABLE `wei_praise` (
   `update_time` int(11) DEFAULT NULL,
   `delete_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of wei_praise
 -- ----------------------------
 INSERT INTO `wei_praise` VALUES ('13', '1', '1', '22', '1', '1569676953', '1569676953', null);
+INSERT INTO `wei_praise` VALUES ('14', '1', '1', '40', '1', '1573607300', '1573607300', null);
+INSERT INTO `wei_praise` VALUES ('15', '1', '1', '44', '1', '1573640415', '1573640415', null);
+INSERT INTO `wei_praise` VALUES ('16', '1', '1', '45', '1', '1573641338', '1573641338', null);
 
 -- ----------------------------
 -- Table structure for wei_role
@@ -243,7 +260,7 @@ CREATE TABLE `wei_tread` (
 -- ----------------------------
 -- Records of wei_tread
 -- ----------------------------
-INSERT INTO `wei_tread` VALUES ('2', '1', '1', '22', '0', '1569678994', '1569678994', null);
+INSERT INTO `wei_tread` VALUES ('2', '1', '1', '22', '1', '1569678994', '1569678994', null);
 
 -- ----------------------------
 -- Table structure for wei_user
@@ -266,11 +283,13 @@ CREATE TABLE `wei_user` (
   `update_time` int(11) DEFAULT NULL,
   `delete_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of wei_user
 -- ----------------------------
-INSERT INTO `wei_user` VALUES ('1', '/user_avatar/20190812\\920daf32fe76fa875a19c60ffcfaa2a5.jpg', 'tian', '1234567', '2', '13512345678', '1234567891', '1047918241@qq.com', '2019-08-08', '123dddddddddd', '1', '1', null, '1569641304', null);
+INSERT INTO `wei_user` VALUES ('1', '/user_avatar/20190812\\920daf32fe76fa875a19c60ffcfaa2a5.jpg', 'lala', 'e10adc3949ba59abbe56e057f20f883e', '2', '13512345678', '1234567892', '1047918241@qq.com', '2019-08-08', '123dddddddddd', '1', '1', null, '1569641304', null);
 INSERT INTO `wei_user` VALUES ('2', '/user_avatar/20190812\\920daf32fe76fa875a19c60ffcfaa2a5.jpg', 'ssssss', 'e10adc3949ba59abbe56e057f20f883e', '0', '13512345678', '1234567891', '123456789@qq.com', '2017-06-20', 'ddsssssssssss', '1', '1', '1564971573', '1564971573', null);
 INSERT INTO `wei_user` VALUES ('3', '/user_avatar/20190812\\920daf32fe76fa875a19c60ffcfaa2a5.jpg', 'nunu', 'e10adc3949ba59abbe56e057f20f883e', '0', '13566612345', '1234567891', '1555555@qq.com', '2019-08-12', 'dddddddddd', '1', '1', '1565184206', '1569640734', null);
+INSERT INTO `wei_user` VALUES ('4', '/user_avatar/20191113\\6b1743818d55b299cb1d70097a1927a2.jpg', 'haha', 'e10adc3949ba59abbe56e057f20f883e', '0', '13512345677', null, '151514554@qq.com', '2019-11-05', 'sssssssssssssssss', '1', '1', '1573633449', '1573636227', null);
+INSERT INTO `wei_user` VALUES ('5', null, 'jiajia', 'e10adc3949ba59abbe56e057f20f883e', '0', '13546512344', '126299', '44894984@qq.com', '2019-11-14', 'aaaaaaaadd', '1', '1', '1573638231', '1573638231', null);
